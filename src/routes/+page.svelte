@@ -202,7 +202,7 @@
 <!-- 학원소개 섹션 -->
 <section id="about" class="intro-section">
     <h2 class="section-title">학원 특징</h2>
-    <div class="intro-grid">
+    <div class="intro-slider">
         {#each features as feature}
             <div class="intro-card">
                 <div
@@ -236,7 +236,7 @@
 <section id="programs" class="program-section">
     <div class="program-container">
         <h2 class="section-title">주요 프로그램</h2>
-        <div class="program-grid">
+        <div class="program-slider">
             {#each programs as program}
                 <div class="program-card">
                     <div
@@ -494,12 +494,6 @@
         color: #2c3e50;
     }
 
-    .intro-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 40px;
-    }
-
     .intro-card {
         text-align: left;
         padding: 0;
@@ -511,6 +505,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        flex: 0 0 300px;
     }
 
     .intro-card:hover {
@@ -592,18 +587,13 @@
         margin: 0 auto;
     }
 
-    .program-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 30px;
-    }
-
     .program-card {
         background: white;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         transition: box-shadow 0.3s;
+        flex: 0 0 350px;
     }
 
     .program-card:hover {
@@ -702,6 +692,54 @@
     }
 
     .news-slider::-webkit-scrollbar-thumb:hover {
+        background: #95a5a6;
+    }
+
+    .intro-slider {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .intro-slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .intro-slider::-webkit-scrollbar-thumb {
+        background: #bdc3c7;
+        border-radius: 4px;
+    }
+
+    .intro-slider::-webkit-scrollbar-thumb:hover {
+        background: #95a5a6;
+    }
+
+    .program-slider {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .program-slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    .program-slider::-webkit-scrollbar-thumb {
+        background: #bdc3c7;
+        border-radius: 4px;
+    }
+
+    .program-slider::-webkit-scrollbar-thumb:hover {
         background: #95a5a6;
     }
 
@@ -891,10 +929,6 @@
 
         .section-title {
             font-size: 32px;
-        }
-
-        .program-grid {
-            grid-template-columns: 1fr;
         }
     }
 </style>
