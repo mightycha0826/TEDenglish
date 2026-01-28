@@ -140,6 +140,14 @@
     ];
 
     let interval: ReturnType<typeof setInterval>;
+    let introSliderInterval: ReturnType<typeof setInterval>;
+    let programSliderInterval: ReturnType<typeof setInterval>;
+
+    let introSliderElement: HTMLElement;
+    let programSliderElement: HTMLElement;
+
+    let currentIntroIndex = 0;
+    let currentProgramIndex = 0;
 
     const startSlideShow = () => {
         stopSlideShow();
@@ -152,9 +160,54 @@
         if (interval) clearInterval(interval);
     };
 
+    const startIntroSlider = () => {
+        stopIntroSlider();
+        introSliderInterval = setInterval(() => {
+            if (introSliderElement) {
+                currentIntroIndex = (currentIntroIndex + 1) % features.length;
+                const cardWidth =
+                    introSliderElement.scrollWidth / features.length;
+                introSliderElement.scrollTo({
+                    left: cardWidth * currentIntroIndex,
+                    behavior: "smooth",
+                });
+            }
+        }, 3000);
+    };
+
+    const stopIntroSlider = () => {
+        if (introSliderInterval) clearInterval(introSliderInterval);
+    };
+
+    const startProgramSlider = () => {
+        stopProgramSlider();
+        programSliderInterval = setInterval(() => {
+            if (programSliderElement) {
+                currentProgramIndex =
+                    (currentProgramIndex + 1) % programs.length;
+                const cardWidth =
+                    programSliderElement.scrollWidth / programs.length;
+                programSliderElement.scrollTo({
+                    left: cardWidth * currentProgramIndex,
+                    behavior: "smooth",
+                });
+            }
+        }, 3000);
+    };
+
+    const stopProgramSlider = () => {
+        if (programSliderInterval) clearInterval(programSliderInterval);
+    };
+
     onMount(() => {
         startSlideShow();
-        return stopSlideShow;
+        startIntroSlider();
+        startProgramSlider();
+        return () => {
+            stopSlideShow();
+            stopIntroSlider();
+            stopProgramSlider();
+        };
     });
 
     function goToSlide(index: number) {
@@ -202,7 +255,16 @@
 <!-- 학원소개 섹션 -->
 <section id="about" class="intro-section">
     <h2 class="section-title">학원 특징</h2>
-    <div class="intro-slider">
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+        class="intro-slider"
+        bind:this={introSliderElement}
+        on:mouseenter={stopIntroSlider}
+        on:mouseleave={startIntroSlider}
+        role="region"
+        aria-label="학원 특징 슬라이더"
+        tabindex="0"
+    >
         {#each features as feature}
             <div class="intro-card">
                 <div
@@ -236,7 +298,16 @@
 <section id="programs" class="program-section">
     <div class="program-container">
         <h2 class="section-title">주요 프로그램</h2>
-        <div class="program-slider">
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+        <div
+            class="program-slider"
+            bind:this={programSliderElement}
+            on:mouseenter={stopProgramSlider}
+            on:mouseleave={startProgramSlider}
+            role="region"
+            aria-label="주요 프로그램 슬라이더"
+            tabindex="0"
+        >
             {#each programs as program}
                 <div class="program-card">
                     <div
@@ -505,7 +576,8 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        flex: 0 0 300px;
+        flex: 0 0 calc(100% - 40px);
+        scroll-snap-align: center;
     }
 
     .intro-card:hover {
@@ -593,7 +665,8 @@
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         transition: box-shadow 0.3s;
-        flex: 0 0 350px;
+        flex: 0 0 calc(100% - 40px);
+        scroll-snap-align: center;
     }
 
     .program-card:hover {
@@ -704,6 +777,7 @@
         scroll-behavior: smooth;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE and Edge */
+        scroll-snap-type: x mandatory;
     }
 
     .intro-slider::-webkit-scrollbar {
@@ -728,6 +802,7 @@
         scroll-behavior: smooth;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE and Edge */
+        scroll-snap-type: x mandatory;
     }
 
     .program-slider::-webkit-scrollbar {
@@ -919,16 +994,57 @@
     }
 
     @media (max-width: 768px) {
+        .intro-section,
+        .program-section,
+        .admissions-content,
+        .contact-content {
+            padding: 60px 20px;
+        }
+
         .slide-title {
-            font-size: 36px;
+            font-size: 32px;
+            margin-bottom: 15px;
         }
 
         .slide-subtitle {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .section-title {
-            font-size: 32px;
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        .card-image {
+            height: 200px;
+        }
+
+        .video-title {
+            font-size: 24px;
+        }
+
+        .news-header {
+            padding-left: 10px;
+        }
+
+        .news-title {
+            font-size: 22px;
+        }
+
+        .info-box h3 {
+            font-size: 22px;
+        }
+
+        .contact-grid {
+            gap: 20px;
+        }
+
+        .map-container {
+            height: 300px;
+        }
+
+        .map-info {
+            padding: 20px;
         }
     }
 </style>

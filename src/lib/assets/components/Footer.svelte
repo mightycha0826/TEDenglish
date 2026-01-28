@@ -85,4 +85,9 @@
         color: #95a5a6;
         font-size: 14px;
     }
+    @media (max-width: 768px) {
+        footer {
+            padding: 40px 20px 20px;
+        }
+    }
 </style>

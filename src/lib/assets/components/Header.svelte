@@ -126,6 +126,9 @@
     }
 
     @media (max-width: 768px) {
+        nav {
+            padding: 15px 20px;
+        }
         .nav-menu {
             display: none;
         }
